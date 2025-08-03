@@ -11,10 +11,10 @@
 
 <body>
 
-    <!-- TOP NAV -->
+       <!-- TOP NAV -->
     <div class="navbar">
         <a href="#" class="logo">
-            <img src="assets/logo.png" alt="Nike" style="height: 40px; width: auto;">
+            <img src="assets/logo.png" alt="Nike">
         </a>
         <div class="navbar-right menu">
             <a href="#slider" class="active">Home</a>
@@ -23,7 +23,6 @@
             <a href="#about-us">About Us</a>
             <a href="#contact">Contact Us</a>
         </div>
-
     </div>
     <!-- END TOP NAV -->
 
@@ -644,8 +643,8 @@
                         <i class="bx bx-calendar-check"></i>
                         <span>Reservation</span>
                     </div>
-                    <div class="nav-item" data-section="settings">
-                        <i class="bx bx-sneaker"></i>
+                    <div class="nav-item" data-section="conversion">
+                        <img src="assets/sneaker.png" alt="Sneaker Icon" class="nav-icon">
                         <span>Shoe Conversion</span>
                     </div>
                 </div>
@@ -733,17 +732,19 @@
                 </div>
 
                 <div class="order-summary">
-                    <div class="summary-item">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">₱ 0.00</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Tax (12%):</span>
-                        <span id="tax">₱ 0.00</span>
-                    </div>
                     <div class="summary-item total">
                         <span>Total:</span>
                         <span id="total">₱ 0.00</span>
+                    </div>
+                    <div class="order-actions">
+                        <button class="cancel-order-btn" id="cancel-order">
+                            <i class="bx bx-x"></i>
+                            Cancel
+                        </button>
+                        <button class="reserve-order-btn" id="reserve-order">
+                            <i class="bx bx-check"></i>
+                            Reserve
+                        </button>
                     </div>
                 </div>
 

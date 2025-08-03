@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Form - Shoe Store</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reservation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .reservation-header {
+            background: linear-gradient(to top right, #112c70, #2a6aff);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .reservation-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .reservation-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .reservation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .reserved-items-section {
+            background: #f8f9fa;
+            padding: 40px;
+            border-right: 2px solid #e9ecef;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+
+        .reserved-items-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+        }
+
+        .reserved-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .reserved-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .item-size {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .item-quantity {
+            background: #e9ecef;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .reservation-total {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #667eea;
+            text-align: center;
+        }
+
+        .total-label {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .total-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .customer-form-section {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .reservation-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: linear-gradient(135deg, #20c997, #17a2b8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .error-message-global {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .reservation-content {
+                grid-template-columns: 1fr;
+            }
+
+            .reserved-items-section {
+                border-right: none;
+                border-bottom: 2px solid #e9ecef;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .reservation-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .reservation-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        .reserved-items-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .reserved-items-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .reserved-items-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
+        }
+
+        .reserved-items-list::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+    </style>
+</head>
+<body>
+    <div class="reservation-container">
+        <!-- Header -->
+        <div class="reservation-header">
+            <h1><i class="bx bx-calendar-check"></i> Complete Your Reservation</h1>
+            <p>Please review your items and fill in your details to confirm your reservation</p>
+        </div>
+
+        <!-- Content -->
+        <div class="reservation-content">
+            <!-- Reserved Items Section -->
+            <div class="reserved-items-section">
+                <h2 class="section-title">
+                    <i class="bx bx-shopping-bag"></i>
+                    Reserved Items
+                </h2>
+                
+                <div class="reserved-items-list" id="reserved-items-list">
+                    <!-- Items will be populated by JavaScript -->
+                </div>
+
+                <div class="reservation-total">
+                    <div class="total-label">Total Amount</div>
+                    <div class="total-amount" id="reservation-total">₱ 0.00</div>
+                </div>
+            </div>
+
+            <!-- Customer Form Section -->
+            <div class="customer-form-section">
+                <h2 class="section-title">
+                    <i class="bx bx-user"></i>
+                    Customer Information
+                </h2>
+
+                <!-- Success/Error Messages -->
+                <div class="success-message" id="success-message">
+                    <i class="bx bx-check-circle"></i>
+                    Reservation submitted successfully!
+                </div>
+
+                <div class="error-message-global" id="error-message">
+                    <i class="bx bx-error-circle"></i>
+                    Please fill in all required fields correctly.
+                </div>
+
+                <form id="customer-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer-name">
+                                Full Name <span class="required">*</span>
+                            </label>
+                            <input type="text" id="customer-name" placeholder="Enter your full name" required>
+                            <div class="error-message" id="name-error">Please enter your full name</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customer-email">
+                                Email Address <span class="required">*</span>
+                            </label>
+                            <input type="email" id="customer-email" placeholder="Enter your email address" required>
+                            <div class="error-message" id="email-error">Please enter a valid email address</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-phone">
+                            Contact Number <span class="required">*</span>
+                        </label>
+                        <input type="tel" id="customer-phone" placeholder="09XXXXXXXXX" maxlength="11" pattern="[0-9]{11}" required>
+                        <div class="error-message" id="phone-error">Please enter a valid 11-digit phone number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-address">
+                            Complete Address <span class="required">*</span>
+                        </label>
+                        <textarea id="customer-address" placeholder="Enter your complete address" rows="3" required></textarea>
+                        <div class="error-message" id="address-error">Please enter your complete address</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pickup-date">
+                                Pickup Date <span class="required">*</span>
+                            </label>
+                            <input type="date" id="pickup-date" required>
+                            <div class="error-message" id="date-error">Please select a pickup date</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pickup-time">
+                                Pickup Time <span class="required">*</span>
+                            </label>
+                            <input type="time" id="pickup-time" required>
+                            <div class="error-message" id="time-error">Please select a pickup time</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+                 <!-- Actions -->
+         <div class="reservation-actions">
+             <button class="btn btn-cancel" id="cancel-reservation">
+                 <i class="bx bx-arrow-back"></i>
+                 Back
+             </button>
+             <button class="btn btn-confirm" id="confirm-reservation">
+                 <i class="bx bx-check"></i>
+                 Confirm Reservation
+             </button>
+         </div>
+    </div>
+
+    <script>
+        // Get reserved items data from localStorage (from main reservation system)
+        let reservedItems = [];
+        let cartTotal = 0;
+        
+        // Load cart data from localStorage
+        function loadCartData() {
+            const cartData = localStorage.getItem('reservationCart');
+            if (cartData) {
+                const data = JSON.parse(cartData);
+                reservedItems = data.items || [];
+                cartTotal = data.total || 0;
+            } else {
+                // If no cart data, redirect back to main page
+                alert('No items in cart. Redirecting to main page.');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // DOM Elements
+        const reservedItemsList = document.getElementById('reserved-items-list');
+        const reservationTotalElement = document.getElementById('reservation-total');
+        const customerForm = document.getElementById('customer-form');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const confirmBtn = document.getElementById('confirm-reservation');
+        const cancelBtn = document.getElementById('cancel-reservation');
+
+        // Initialize the page
+        function initializeReservationForm() {
+            loadCartData();
+            populateReservedItems();
+            setMinimumDate();
+            setupEventListeners();
+        }
+
+        // Populate reserved items
+        function populateReservedItems() {
+            reservedItemsList.innerHTML = '';
+            
+            if (reservedItems.length === 0) {
+                reservedItemsList.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <i class="bx bx-shopping-bag" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4>No items in cart</h4>
+                        <p>Please add items to your cart first</p>
+                    </div>
+                `;
+                reservationTotalElement.textContent = '₱ 0.00';
+                return;
+            }
+            
+            reservedItems.forEach(item => {
+                const itemTotal = parseFloat(item.price) * item.quantity;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'reserved-item';
+                itemElement.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">₱${itemTotal.toLocaleString()}</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-size">Size ${item.size}</div>
+                        <div class="item-quantity">Qty: ${item.quantity}</div>
+                    </div>
+                `;
+                
+                reservedItemsList.appendChild(itemElement);
+            });
+            
+            // Update total using the loaded cart total
+            reservationTotalElement.textContent = `₱${cartTotal.toLocaleString()}`;
+        }
+
+        // Set minimum date to today
+        function setMinimumDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('pickup-date').min = today;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Phone number validation
+            document.getElementById('customer-phone').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value.length > 11) {
+                    this.value = this.value.slice(0, 11);
+                }
+                validateField(this, 'phone');
+            });
+
+            // Real-time validation
+            document.getElementById('customer-name').addEventListener('input', function() {
+                validateField(this, 'name');
+            });
+
+            document.getElementById('customer-email').addEventListener('input', function() {
+                validateField(this, 'email');
+            });
+
+            document.getElementById('customer-address').addEventListener('input', function() {
+                validateField(this, 'address');
+            });
+
+            document.getElementById('pickup-date').addEventListener('change', function() {
+                validateField(this, 'date');
+            });
+
+            document.getElementById('pickup-time').addEventListener('change', function() {
+                validateField(this, 'time');
+            });
+
+            // Form submission
+            confirmBtn.addEventListener('click', handleReservationSubmit);
+            cancelBtn.addEventListener('click', handleCancel);
+        }
+
+        // Validate individual field
+        function validateField(field, fieldType) {
+            const errorElement = document.getElementById(`${fieldType}-error`);
+            let isValid = true;
+
+            switch (fieldType) {
+                case 'name':
+                    isValid = field.value.trim().length >= 2;
+                    break;
+                case 'email':
+                    isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
+                    break;
+                case 'phone':
+                    isValid = /^[0-9]{11}$/.test(field.value);
+                    break;
+                case 'address':
+                    isValid = field.value.trim().length >= 10;
+                    break;
+                case 'date':
+                    isValid = field.value !== '';
+                    break;
+                case 'time':
+                    isValid = field.value !== '';
+                    break;
+            }
+
+            if (isValid) {
+                field.style.borderColor = '#28a745';
+                errorElement.style.display = 'none';
+            } else {
+                field.style.borderColor = '#dc3545';
+                errorElement.style.display = 'block';
+            }
+
+            return isValid;
+        }
+
+        // Handle form submission
+        function handleReservationSubmit() {
+            // Validate all fields
+            const fields = [
+                { element: document.getElementById('customer-name'), type: 'name' },
+                { element: document.getElementById('customer-email'), type: 'email' },
+                { element: document.getElementById('customer-phone'), type: 'phone' },
+                { element: document.getElementById('customer-address'), type: 'address' },
+                { element: document.getElementById('pickup-date'), type: 'date' },
+                { element: document.getElementById('pickup-time'), type: 'time' }
+            ];
+
+            let allValid = true;
+            fields.forEach(field => {
+                if (!validateField(field.element, field.type)) {
+                    allValid = false;
+                }
+            });
+
+            if (!allValid) {
+                showError('Please fill in all required fields correctly.');
+                return;
+            }
+
+            // Get form data
+            const formData = {
+                name: document.getElementById('customer-name').value.trim(),
+                email: document.getElementById('customer-email').value.trim(),
+                phone: document.getElementById('customer-phone').value.trim(),
+                address: document.getElementById('customer-address').value.trim(),
+                pickupDate: document.getElementById('pickup-date').value,
+                pickupTime: document.getElementById('pickup-time').value,
+                items: reservedItems,
+                total: cartTotal
+            };
+
+            // Show confirmation
+            const confirmationMessage = `Reservation Confirmation:\n\nCustomer: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nAddress: ${formData.address}\nPickup Date: ${formData.pickupDate}\nPickup Time: ${formData.pickupTime}\n\nTotal: ₱${formData.total.toLocaleString()}\n\nConfirm this reservation?`;
+
+            if (confirm(confirmationMessage)) {
+                // Process reservation
+                showSuccess('Reservation submitted successfully!');
+                
+                // Clear the cart data from localStorage
+                localStorage.removeItem('reservationCart');
+                
+                // Disable form
+                disableForm();
+                
+                // Redirect back to main page after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            }
+        }
+
+                 // Handle back button
+         function handleCancel() {
+             if (confirm('Go back to add more items to your reservation?')) {
+                 // Keep the cart data in localStorage so user can add more items
+                 // localStorage.removeItem('reservationCart'); // Removed this line
+                 // Redirect back to main page
+                 window.location.href = 'index.html';
+             }
+         }
+
+        // Show success message
+        function showSuccess(message) {
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            successMessage.innerHTML = `<i class="bx bx-check-circle"></i> ${message}`;
+        }
+
+        // Show error message
+        function showError(message) {
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            errorMessage.innerHTML = `<i class="bx bx-error-circle"></i> ${message}`;
+        }
+
+        // Disable form
+        function disableForm() {
+            const inputs = customerForm.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.disabled = true);
+            confirmBtn.disabled = true;
+            cancelBtn.disabled = true;
+        }
+
+        // Reset form
+        function resetForm() {
+            customerForm.reset();
+            const inputs = customerForm.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.style.borderColor = '#e9ecef';
+            });
+            confirmBtn.disabled = false;
+            cancelBtn.disabled = false;
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeReservationForm);
+    </script>
+</body>
+</html>

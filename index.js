@@ -627,9 +627,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             ];
 
-            let cart = [];
-            let currentFilter = 'all';
-            let selectedSizes = {};
+            window.cart = [];
+            window.currentFilter = 'all';
+            window.selectedSizes = {};
             let cashAmount = "0.00";
 
             // Open reservation modal when Reserve Now buttons are clicked
@@ -652,8 +652,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.overflow = 'hidden';
                 updateDateTime();
                 loadProducts();
+                
+                // Load cart data from localStorage if available
+                const savedCartData = localStorage.getItem('reservationCart');
+                if (savedCartData) {
+                    try {
+                        const data = JSON.parse(savedCartData);
+                        if (data.items && data.items.length > 0) {
+                            // Restore cart items from localStorage
+                            cart.length = 0; // Clear current cart
+                            data.items.forEach(item => {
+                                cart.push(item);
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error loading cart data:', error);
+                    }
+                }
+                
                 loadCart();
                 setInterval(updateDateTime, 1000);
+                
+                // Initialize logout functionality
+                initializeLogout();
             }
 
             function closeReservationModal() {
@@ -690,8 +711,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     navItems.forEach(nav => nav.classList.remove('active'));
                     this.classList.add('active');
 
-                    // For now, only reservation section is functional
-                    if (section !== 'reservation') {
+                    // Handle different sections
+                    if (section === 'reservation') {
+                        // Stay in reservation system (default behavior)
+                        return;
+                    } else if (section === 'conversion') {
+                        // Redirect to shoe conversion page
+                        window.location.href = 'shoe conversion.html';
+                        return;
+                    } else {
                         alert('This section is not available in the demo.');
                         return;
                     }
@@ -733,6 +761,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 filteredProducts.forEach(product => {
                             const productCard = document.createElement('div');
                             productCard.className = 'product-card';
+                            
+                            // Determine stock status and button state
+                            const isOutOfStock = product.stock <= 0;
+                            const stockClass = isOutOfStock ? 'out-of-stock' : 'in-stock';
+                            const stockText = isOutOfStock ? 'Out of Stock' : `${product.stock} in stock`;
+                            const buttonDisabled = isOutOfStock ? 'disabled' : '';
+                            const buttonClass = isOutOfStock ? 'add-to-cart-btn disabled' : 'add-to-cart-btn';
+                            
                             productCard.innerHTML = `
                 <div class="product-image">
                     <div class="product-badge">${product.category.toUpperCase()}</div>
@@ -743,7 +779,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="product-brand">${product.brand}</div>
                     <div class="product-details">
                         <div class="product-price">₱${product.price.toLocaleString()}</div>
-                        <div class="product-stock">${product.stock} in stock</div>
+                        <div class="product-stock ${stockClass}">${stockText}</div>
                     </div>
                     <div class="product-sizes">
                         <span class="size-label">Sizes:</span>
@@ -751,9 +787,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span class="size-badge" data-product="${product.id}" data-size="${size}">${size}</span>
                         `).join('')}
                     </div>
-                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                    <button class="${buttonClass}" onclick="addToCart(${product.id})" ${buttonDisabled}>
                         <i class="bx bx-plus"></i>
-                        Add to Cart
+                        ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
                     </button>
                 </div>
             `;
@@ -766,44 +802,97 @@ document.addEventListener('DOMContentLoaded', function() {
                 const productId = this.getAttribute('data-product');
                 const size = this.getAttribute('data-size');
                 
-                // Clear other selected sizes for this product
-                document.querySelectorAll(`[data-product="${productId}"]`).forEach(b => b.classList.remove('selected'));
-                this.classList.add('selected');
-                
-                selectedSizes[productId] = size;
+                // Check if this size is already selected
+                if (this.classList.contains('selected')) {
+                    // Deselect this size
+                    this.classList.remove('selected');
+                    delete selectedSizes[productId];
+                    
+                    // Update add to cart button
+                    const productCard = this.closest('.product-card');
+                    const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+                    addToCartBtn.classList.remove('ready');
+                    addToCartBtn.innerHTML = '<i class="bx bx-plus"></i>Add to Cart';
+                } else {
+                    // Clear other selected sizes for this product
+                    document.querySelectorAll(`[data-product="${productId}"]`).forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    selectedSizes[productId] = size;
+                    
+                    // Update add to cart button for this product
+                    const productCard = this.closest('.product-card');
+                    const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+                    addToCartBtn.classList.add('ready');
+                    addToCartBtn.innerHTML = '<i class="bx bx-plus"></i>Add to Cart';
+                }
             });
         });
     }
 
-    function addToCart(productId) {
+    // Make functions globally accessible
+    window.addToCart = function(productId) {
         const product = findProduct(productId);
         if (product) {
             const selectedSize = selectedSizes[productId];
             if (!selectedSize) {
-                alert('Please select a size first!');
+                showNotification('Please select a size first!');
+                return;
+            }
+            
+            // Check stock availability
+            if (product.stock <= 0) {
+                showNotification('Sorry, this item is out of stock!');
                 return;
             }
             
             const existingItem = cart.find(item => item.id === productId && item.size === selectedSize);
             if (existingItem) {
+                if (existingItem.quantity >= 10) {
+                    showNotification('Maximum quantity is 10 per item');
+                    return;
+                }
+                if (existingItem.quantity >= product.stock) {
+                    showNotification(`Only ${product.stock} items left in stock!`);
+                    return;
+                }
                 existingItem.quantity += 1;
+                // Decrease stock
+                product.stock -= 1;
+                showNotification(`${product.name} (Size ${selectedSize}) quantity increased`);
             } else {
                 cart.push({
                     ...product,
                     size: selectedSize,
                     quantity: 1
                 });
+                // Decrease stock
+                product.stock -= 1;
+                showNotification(`${product.name} (Size ${selectedSize}) added to cart`);
             }
+            
+            // Update cart display and total
             loadCart();
-            showNotification('Product added to cart!');
+            // Reload products to update stock display
+            loadProducts();
+            
+            // Reset the add to cart button
+            const productCard = document.querySelector(`[data-product="${productId}"]`).closest('.product-card');
+            const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+            addToCartBtn.classList.remove('ready');
+            addToCartBtn.innerHTML = '<i class="bx bx-plus"></i>Add to Cart';
+            
+            // Clear size selection for this product
+            document.querySelectorAll(`[data-product="${productId}"]`).forEach(b => b.classList.remove('selected'));
+            delete selectedSizes[productId];
         }
-    }
+    };
 
-    function findProduct(productId) {
+    window.findProduct = function(productId) {
         return PRODUCTS.find(p => p.id === productId);
-    }
+    };
 
-    function loadCart() {
+    window.loadCart = function() {
         cartItems.innerHTML = '';
         
         if (cart.length === 0) {
@@ -821,65 +910,169 @@ document.addEventListener('DOMContentLoaded', function() {
         cart.forEach(item => {
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
+            
             cartItem.innerHTML = `
-                <div class="cart-item-image">
-                    <i class="bx bx-shoe"></i>
-                </div>
-                <div class="cart-item-infos">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-size">Size: ${item.size}</div>
-                    <div class="cart-item-price">${item.price}</div>
-                </div>
-                <div class="cart-item-actions">
-                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.size}, -1)">-</button>
-                    <span class="quantity">${item.quantity}</span>
-                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.size}, 1)">+</button>
-                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}')">Remove</button>
+                <div class="cart-item-info">
+                    <div class="cart-item-row">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">₱${parseFloat(item.price).toLocaleString()}</div>
+                    </div>
+                    <div class="cart-item-row">
+                        <div class="cart-item-size">Size: ${item.size}</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" onclick="updateQuantity(${item.id}, '${item.size}', -1)" ${item.quantity <= 1 ? 'disabled' : ''}>
+                                <i class="bx bx-minus"></i>
+                            </button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn plus" onclick="updateQuantity(${item.id}, '${item.size}', 1)">
+                                <i class="bx bx-plus"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
             cartItems.appendChild(cartItem);
         });
         
+        // Always update the order summary after loading cart
         updateOrderSummary();
-    }
+    };
 
-    function updateOrderSummary() {
-        let subtotal = 0;
+    window.updateOrderSummary = function() {
+        let total = 0;
         
         cart.forEach(item => {
-            const price = parseFloat(item.price.replace('₱', '').replace(',', ''));
-            subtotal += price * item.quantity;
+            // Handle different price formats
+            let price = item.price;
+            if (typeof price === 'string') {
+                price = price.replace('₱', '').replace(/,/g, '');
+            }
+            total += parseFloat(price) * item.quantity;
         });
         
-        const tax = subtotal * 0.12;
-        const total = subtotal + tax;
+        // Format total with proper commas for thousands and millions
+        const formattedTotal = total.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
         
-        document.getElementById('subtotal').textContent = `₱ ${subtotal.toFixed(2)}`;
-        document.getElementById('tax').textContent = `₱ ${tax.toFixed(2)}`;
-        document.getElementById('total').textContent = `₱ ${total.toFixed(2)}`;
-    }
+        document.getElementById('total').textContent = `₱ ${formattedTotal}`;
+    };
 
-    function updateQuantity(productId, size, change) {
+    window.updateQuantity = function(productId, size, change) {
         const item = cart.find(item => item.id === productId && item.size === size);
         if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
+            const newQuantity = item.quantity + change;
+            
+            if (newQuantity <= 0) {
                 removeFromCart(productId, size);
+                showNotification('Item removed from cart');
+            } else if (newQuantity > 10) {
+                showNotification('Maximum quantity is 10 per item');
+                return;
             } else {
+                // Handle stock changes
+                const product = findProduct(productId);
+                if (change > 0) {
+                    // Increasing quantity - check stock
+                    if (product.stock <= 0) {
+                        showNotification('Sorry, this item is out of stock!');
+                        return;
+                    }
+                    product.stock -= 1;
+                } else {
+                    // Decreasing quantity - increase stock back
+                    product.stock += 1;
+                }
+                
+                item.quantity = newQuantity;
+                // Update cart display and total
                 loadCart();
+                // Reload products to update stock display
+                loadProducts();
+                showNotification(`Quantity updated to ${newQuantity}`);
             }
         }
-    }
+    };
 
-    function removeFromCart(productId, size) {
-        cart = cart.filter(item => !(item.id === productId && item.size === size));
-        loadCart();
-    }
+    window.removeFromCart = function(productId, size) {
+        const item = cart.find(item => item.id === productId && item.size === size);
+        if (item) {
+            // Restore stock
+            const product = findProduct(productId);
+            if (product) {
+                product.stock += item.quantity;
+            }
+            
+            cart = cart.filter(item => !(item.id === productId && item.size === size));
+            // Update cart display and total
+            loadCart();
+            // Reload products to update stock display
+            loadProducts();
+            showNotification(`${item.name} (Size ${item.size}) removed from cart`);
+        }
+    };
 
     // Clear cart
     clearCart.addEventListener('click', function() {
+        // Restore all stock
+        cart.forEach(item => {
+            const product = findProduct(item.id);
+            if (product) {
+                product.stock += item.quantity;
+            }
+        });
+        
         cart = [];
+        // Update cart display and total
         loadCart();
+        // Reload products to update stock display
+        loadProducts();
+    });
+
+    // Cancel order button
+    const cancelOrderBtn = document.getElementById('cancel-order');
+    cancelOrderBtn.addEventListener('click', function() {
+        if (cart.length === 0) {
+            showNotification('Cart is already empty!');
+            return;
+        }
+        
+        if (confirm('Are you sure you want to cancel this order? All items will be returned to stock.')) {
+            // Restore all stock
+            cart.forEach(item => {
+                const product = findProduct(item.id);
+                if (product) {
+                    product.stock += item.quantity;
+                }
+            });
+            
+            cart = [];
+            loadCart();
+            loadProducts();
+            showNotification('Order cancelled successfully!');
+        }
+    });
+
+    // Reserve order button
+    const reserveOrderBtn = document.getElementById('reserve-order');
+    reserveOrderBtn.addEventListener('click', function() {
+        if (cart.length === 0) {
+            showNotification('Please add items to your cart first!');
+            return;
+        }
+        
+        // Store cart data in localStorage before redirecting
+        const cartData = {
+            items: cart,
+            total: parseFloat(document.getElementById('total').textContent.replace('₱', '').replace(/,/g, ''))
+        };
+        
+        // Save cart data to localStorage
+        localStorage.setItem('reservationCart', JSON.stringify(cartData));
+        
+        // Redirect to reservation form
+        window.location.href = 'reservation form.html';
     });
 
     // Search functionality
@@ -965,6 +1158,44 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('[data-section="reservation"]').classList.add('active');
     }
 
+    // Logout functionality
+    function initializeLogout() {
+        const logoutBtn = document.querySelector('.logout-btn');
+        if (logoutBtn) {
+            // Remove any existing event listeners
+            logoutBtn.replaceWith(logoutBtn.cloneNode(true));
+            const newLogoutBtn = document.querySelector('.logout-btn');
+            
+            newLogoutBtn.addEventListener('click', function() {
+                // Show confirmation dialog
+                if (confirm('Are you sure you want to logout? Your current reservation will be cleared.')) {
+                    // Reset the reservation system
+                    resetReservationSystem();
+                    
+                    // Close the reservation modal
+                    closeReservationModal();
+                    
+                    // Show logout notification
+                    showNotification('Successfully logged out!');
+                    
+                    // Scroll to top of page to show home section
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Reset home section if needed
+                    if (typeof resetHomeSection === 'function') {
+                        resetHomeSection();
+                    }
+                    
+                    // Ensure body scroll is restored
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+    }
+
     function showNotification(message) {
         // Create notification element
         const notification = document.createElement('div');
@@ -988,4 +1219,37 @@ document.addEventListener('DOMContentLoaded', function() {
             notification.remove();
         }, 3000);
     }
+    
+    // Global logout event listener using event delegation
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.logout-btn')) {
+            e.preventDefault();
+            
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to logout? Your current reservation will be cleared.')) {
+                // Reset the reservation system
+                resetReservationSystem();
+                
+                // Close the reservation modal
+                closeReservationModal();
+                
+                // Show logout notification
+                showNotification('Successfully logged out!');
+                
+                // Scroll to top of page to show home section
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                
+                // Reset home section if needed
+                if (typeof resetHomeSection === 'function') {
+                    resetHomeSection();
+                }
+                
+                // Ensure body scroll is restored
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
 });
