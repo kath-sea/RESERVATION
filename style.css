@@ -11,27 +11,22 @@
     --blue-one: #021B79;
     --blue-two: #0575E6;
     --silver: #bdc3c7;
-    
     /* Design System Variables */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
-    
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
-    
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-    
     --transition-normal: 0.3s ease;
     --transition-fast: 0.15s ease;
-    
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -42,13 +37,11 @@
     --gray-700: #374151;
     --gray-800: #1f2937;
     --gray-900: #111827;
-    
     --primary: #32519a;
     --primary-light: #4967af;
     --success: #10b981;
     --warning: #f59e0b;
     --error: #ef4444;
-    
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -58,7 +51,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -94,7 +86,9 @@ html {
     line-height: 1.6;
 }
 
+
 /* Allow scrolling when viewing sections other than slider */
+
 body.section-view {
     overflow-y: auto;
     overflow-x: hidden;
@@ -364,6 +358,7 @@ body.section-view html {
     font-size: 0.9rem;
     transition: all 0.6s ease-in-out;
 }
+
 .button {
     margin-top: 15px;
     transition: all 0.6s ease-in-out;
@@ -804,7 +799,9 @@ body.section-view html {
     align-items: start;
 }
 
+
 /* Center the last 2 cards in the second row */
+
 .service-card:nth-child(4) {
     grid-column: 2;
 }
@@ -813,24 +810,27 @@ body.section-view html {
     grid-column: 3;
 }
 
+
 /* For 6 cards, we want a perfect 3-3 layout */
+
 .service-card:nth-child(4),
 .service-card:nth-child(5),
 .service-card:nth-child(6) {
-    grid-column: auto; /* Reset to auto for 6 cards */
+    grid-column: auto;
+    /* Reset to auto for 6 cards */
 }
 
+
 /* Responsive adjustments */
+
 @media (max-width: 1200px) {
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 25px;
     }
-    
     .service-card:nth-child(4) {
         grid-column: 1;
     }
-    
     .service-card:nth-child(5) {
         grid-column: 2;
     }
@@ -841,14 +841,15 @@ body.section-view html {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
     .service-card:nth-child(4),
     .service-card:nth-child(5) {
         grid-column: 1;
     }
 }
 
+
 /* Center the grid container itself */
+
 .services-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -957,7 +958,9 @@ body.section-view html {
     line-height: 1;
 }
 
+
 /* Ensure Boxicons are properly loaded and visible */
+
 .bx {
     font-family: 'boxicons' !important;
     font-weight: normal;
@@ -1005,6 +1008,7 @@ body.section-view html {
     overflow: hidden;
     position: relative;
 }
+
 
 /* Testimonials Section - Enhanced with Services-like UI */
 
@@ -1168,7 +1172,9 @@ body.section-view html {
     transform: scale(1.1);
 }
 
+
 /* Placeholder for missing images */
+
 .testimonial-image::before {
     content: '';
     position: absolute;
@@ -1202,6 +1208,7 @@ body.section-view html {
     font-size: 0.9rem;
     color: var(--black-two);
 }
+
 
 /* Responsive Testimonials */
 
@@ -1241,6 +1248,7 @@ body.section-view html {
         font-size: 1rem;
     }
 }
+
 
 /* About Us Section - Enhanced with Impressive UI */
 
@@ -1432,7 +1440,9 @@ body.section-view html {
     color: var(--black);
 }
 
+
 /* About Stats Section */
+
 .about-stats {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1491,7 +1501,9 @@ body.section-view html {
     letter-spacing: 0.05em;
 }
 
+
 /* About Image Section */
+
 .about-image-section {
     display: flex;
     flex-direction: column;
@@ -1574,6 +1586,7 @@ body.section-view html {
     margin: 0;
 }
 
+
 /* Responsive About Us */
 
 @media (max-width: 1200px) {
@@ -1581,27 +1594,21 @@ body.section-view html {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
     .about-text {
         padding: 35px;
     }
-    
     .about-header h2 {
         font-size: 2.2rem;
     }
-    
     .about-header p {
         font-size: 1rem;
     }
-    
     .about-text h3 {
         font-size: 1.6rem;
     }
-    
     .about-text p {
         font-size: 1rem;
     }
-    
     .about-text li {
         font-size: 1rem;
     }
@@ -1611,69 +1618,55 @@ body.section-view html {
     .about-content {
         gap: 30px;
     }
-    
     .about-text {
         padding: 25px;
     }
-    
     .about-header h2 {
         font-size: 2rem;
     }
-    
     .about-header p {
         font-size: 1rem;
     }
-    
     .about-text h3 {
         font-size: 1.4rem;
     }
-    
     .about-text p {
         font-size: 0.95rem;
     }
-    
     .about-text li {
         font-size: 0.95rem;
     }
-    
     .about-stats {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
-    
     .stat-card {
         padding: 20px 15px;
     }
-    
     .stat-number {
         font-size: 2rem;
     }
-    
     .stat-label {
         font-size: 0.8rem;
     }
-    
     .about-image-card {
         padding: 25px 20px;
     }
-    
     .about-image-placeholder {
         width: 100px;
         height: 100px;
     }
-    
     .about-image-placeholder i {
         font-size: 2.5rem;
     }
-    
     .about-image-card h4 {
         font-size: 1.2rem;
     }
-    
     .about-image-card p {
         font-size: 0.9rem;
     }
 }
+
 
 /* Contact Section - Enhanced with Impressive UI */
 
@@ -1865,7 +1858,9 @@ body.section-view html {
     margin: 0;
 }
 
+
 /* Social Media Section */
+
 .social-media-section {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -1922,9 +1917,9 @@ body.section-view html {
 
 .social-media-grid {
     display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
 
 .social-media-card {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
@@ -1999,7 +1994,9 @@ body.section-view html {
     z-index: 3;
 }
 
+
 /* Social Media Brand Colors */
+
 .social-media-card.facebook .social-media-icon {
     background: linear-gradient(135deg, #1877f2 0%, #0d6efd 100%);
 }
@@ -2024,7 +2021,9 @@ body.section-view html {
     background: linear-gradient(135deg, #0084ff 0%, #0066cc 100%);
 }
 
+
 /* Ensure all social media icons are visible */
+
 .social-media-icon i {
     font-size: 1.8rem;
     color: var(--white);
@@ -2035,19 +2034,24 @@ body.section-view html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* Specific TikTok icon styling to ensure visibility */
+
 .social-media-card.tiktok .social-media-icon i {
     font-size: 1.6rem;
     color: var(--white);
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
+
 /* TikTok image styling */
+
 .tiktok-icon {
     width: 32px;
     height: 32px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Makes the image white */
+    filter: brightness(0) invert(1);
+    /* Makes the image white */
     transition: all 0.3s ease;
 }
 
@@ -2056,7 +2060,9 @@ body.section-view html {
     filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
+
 /* Ensure Boxicons are properly loaded for social media */
+
 .bxl-facebook,
 .bxl-instagram,
 .bxl-tiktok,
@@ -2073,7 +2079,9 @@ body.section-view html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* Fix TikTok icon class */
+
 .bxl.bx-tiktok {
     font-family: 'boxicons' !important;
     font-weight: normal;
@@ -2102,7 +2110,9 @@ body.section-view html {
     font-weight: 500;
 }
 
+
 /* Contact Form Section */
+
 .contact-form-section {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -2160,7 +2170,7 @@ body.section-view html {
 
 .contact-form {
     display: flex;
-        flex-direction: column;
+    flex-direction: column;
     gap: 20px;
 }
 
@@ -2214,6 +2224,7 @@ body.section-view html {
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
+
 /* Responsive Contact Us */
 
 @media (max-width: 1200px) {
@@ -2221,20 +2232,16 @@ body.section-view html {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
     .contact-info,
     .social-media-section {
         padding: 35px;
     }
-    
     .contact-header h2 {
         font-size: 2.2rem;
     }
-    
     .contact-header p {
         font-size: 1rem;
     }
-    
     .social-media-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
@@ -2245,75 +2252,61 @@ body.section-view html {
     .contact-content {
         gap: 30px;
     }
-    
     .contact-info,
     .social-media-section,
     .contact-form-section {
         padding: 25px;
     }
-    
     .contact-header h2 {
         font-size: 2rem;
     }
-    
     .contact-header p {
         font-size: 1rem;
     }
-    
     .contact-item {
         padding: 15px;
         margin-bottom: 20px;
     }
-    
     .contact-item i {
         font-size: 1.5rem;
     }
-    
     .contact-item h4 {
         font-size: 1.1rem;
     }
-    
     .contact-item p {
         font-size: 0.9rem;
     }
-    
     .social-media-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
     .social-media-card {
         padding: 20px 15px;
     }
-    
     .social-media-icon {
         width: 50px;
         height: 50px;
     }
-    
     .social-media-icon i {
         font-size: 1.5rem;
     }
-    
     .social-media-card h4 {
         font-size: 1rem;
     }
-    
     .social-media-card p {
         font-size: 0.8rem;
     }
-    
     .form-group input,
     .form-group textarea {
         padding: 12px 15px;
         font-size: 0.9rem;
     }
-    
     .submit-btn {
         padding: 12px 25px;
         font-size: 1rem;
     }
 }
+
 
 /* POS Style Reservation System */
 
@@ -2407,13 +2400,15 @@ body.section-view html {
     font-size: 1.5rem;
 }
 
+
 /* Category Selection */
+
 .category-selection {
     padding: 40px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-    }
+    gap: 30px;
+}
 
 .category-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
@@ -2495,7 +2490,9 @@ body.section-view html {
     display: inline-block;
 }
 
+
 /* Product Selection */
+
 .product-selection {
     padding: 40px;
 }
@@ -2527,7 +2524,7 @@ body.section-view html {
 }
 
 .selection-header h3 {
-        font-size: 2rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--black);
     margin: 0;
@@ -2592,7 +2589,9 @@ body.section-view html {
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
+
 /* Reservation Form */
+
 .reservation-form {
     padding: 40px;
 }
@@ -2698,7 +2697,9 @@ body.section-view html {
     color: white;
 }
 
+
 /* Form Styling */
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2723,7 +2724,7 @@ body.section-view html {
     padding: 15px;
     border: 2px solid #ddd;
     border-radius: 10px;
-        font-size: 1rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
     background: white;
 }
@@ -2740,10 +2741,12 @@ body.section-view html {
     min-height: 100px;
 }
 
+
 /* Reservation Summary */
+
 .reservation-summary {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-        padding: 25px;
+    padding: 25px;
     border-radius: 15px;
     margin-bottom: 30px;
     border: 1px solid rgba(102, 126, 234, 0.2);
@@ -2799,51 +2802,47 @@ body.section-view html {
     box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
 }
 
+
 /* Responsive Design */
+
 @media (max-width: 768px) {
     .reservation-container {
         margin: 10px;
         border-radius: 15px;
     }
-    
     .reservation-header {
         padding: 20px;
     }
-    
     .reservation-header h2 {
         font-size: 2rem;
     }
-    
     .category-selection {
         padding: 20px;
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
     .category-card {
         padding: 30px 20px;
     }
-    
     .product-selection,
     .reservation-form {
         padding: 20px;
     }
-    
     .selected-product-info {
         flex-direction: column;
         text-align: center;
     }
-    
     .form-row {
         grid-template-columns: 1fr;
     }
-    
     .size-options {
         justify-content: center;
     }
 }
 
+
 /* POS Sidebar Styles */
+
 .pos-sidebar {
     width: 280px;
     background: linear-gradient(to top right, #32519a, #4967af);
@@ -2984,7 +2983,9 @@ body.section-view html {
     background: rgba(255, 255, 255, 0.2);
 }
 
+
 /* Main Content Area */
+
 .pos-main {
     flex: 1;
     background: #f8f9fa;
@@ -3138,6 +3139,8 @@ body.section-view html {
     background: #f8f9fa;
     color: #e74c3c;
 }
+
+
 /* Products Grid */
 
 .products-grid {
@@ -3200,7 +3203,7 @@ body.section-view html {
     position: absolute;
     top: var(--spacing-sm);
     right: var(--spacing-sm);
-    background: linear-gradient(135deg, #1e3a8a 0%, #a3bffa 100%) !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #a3bffa 100%);
     color: var(--white);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-md);
@@ -3214,27 +3217,22 @@ body.section-view html {
     z-index: 10;
 }
 
-.product-info {
-    padding: var(--spacing-sm);
+.product-infos {
+    padding: 4px;
+    /* Reduced from var(--spacing-sm) */
     display: flex;
     flex-direction: column;
     flex: 1;
     justify-content: space-between;
-    gap: var(--spacing-xs);
+    gap: 2px;
+    /* Reduced from var(--spacing-xs) */
 }
 
 .product-name {
-    font-family: var(--font-primary);
-    font-size: 0.9rem;
-    font-weight: 300;
-    /* Thinner weight */
-    color: var(--gray-800);
-    line-height: 1.2;
-    min-height: 1.8rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 0.8rem;
+    /* Slightly smaller */
+    min-height: 1.2rem;
+    /* Less space */
     margin: 0;
 }
 
@@ -3335,7 +3333,7 @@ body.section-view html {
 }
 
 .add-to-cart-btn:hover {
-    background: linear-gradient(135deg, #1a202c 0%, #4a5568 100%);
+    background: linear-gradient(135deg, #32519a 0%, #4967af 100%) !important;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -3348,7 +3346,9 @@ body.section-view html {
     box-shadow: none;
 }
 
+
 /* Right Sidebar - Shopping Cart */
+
 .pos-cart {
     width: 350px;
     background: white;
@@ -3517,7 +3517,9 @@ body.section-view html {
     font-size: 0.7rem;
 }
 
+
 /* Order Summary */
+
 .order-summary {
     padding: 20px;
     border-top: 1px solid #e9ecef;
@@ -3541,21 +3543,12 @@ body.section-view html {
 }
 
 
-
-
-
-
-
-
-
-
-
 /* Responsive Design */
+
 @media (max-width: 1200px) {
     .pos-cart {
         width: 320px;
     }
-    
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
@@ -3565,32 +3558,26 @@ body.section-view html {
     .reservation-container {
         flex-direction: column;
     }
-    
     .pos-sidebar {
         width: 100%;
         height: auto;
     }
-    
     .pos-cart {
         width: 100%;
         height: 50vh;
     }
-    
     .sidebar-nav {
         display: flex;
         padding: 10px;
     }
-    
     .nav-item {
         flex: 1;
         justify-content: center;
         padding: 10px;
     }
-    
     .category-filters {
         flex-wrap: wrap;
     }
-    
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
