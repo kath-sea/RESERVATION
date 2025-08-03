@@ -2845,7 +2845,7 @@ body.section-view html {
 
 .pos-sidebar {
     width: 280px;
-    background: linear-gradient(to top right, #32519a, #4967af);
+    background: linear-gradient(to top right, #112c70, #2a6aff);
     color: white;
     display: flex;
     flex-direction: column;
@@ -3020,11 +3020,9 @@ body.section-view html {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #6c757d;
     font-weight: 500;
     background: #f8f9fa;
     padding: 8px 12px;
-    border-radius: 8px;
 }
 
 .time-display i,
@@ -3087,7 +3085,7 @@ body.section-view html {
 }
 
 .filter-btn.active {
-    background: linear-gradient(to top right, #32519a, #4967af);
+    background: linear-gradient(to top right, #112c70, #2a6aff);
     color: white;
     border-color: transparent;
     transform: scale(1.05);
@@ -3203,7 +3201,7 @@ body.section-view html {
     position: absolute;
     top: var(--spacing-sm);
     right: var(--spacing-sm);
-    background: linear-gradient(135deg, #1e3a8a 0%, #a3bffa 100%);
+    background: linear-gradient(135deg, #133288 0%, #3273ff 100%);
     color: var(--white);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-md);
@@ -3313,7 +3311,7 @@ body.section-view html {
 
 .add-to-cart-btn {
     width: 100%;
-    background: linear-gradient(135deg, #1e3a8a 0%, #a3bffa 100%);
+    background: linear-gradient(to top right, #112c70, #2a6aff);
     color: var(--white);
     border: none;
     padding: var(--spacing-xs);
